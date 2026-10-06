@@ -656,6 +656,9 @@ pub const MAX_SHADERSTAGE_IMAGES: usize = 12;
 pub struct Features {
     pub instancing: bool,
     pub alpha_texture: bool,
+    /// Context is OpenGL ES 2.0, which lacks `glBlitFramebuffer` and
+    /// `glCopyTexSubImage2D`.
+    pub is_gles2: bool,
 }
 
 impl Features {
@@ -663,6 +666,7 @@ impl Features {
         Features {
             instancing: !is_gles2,
             alpha_texture: is_gles2,
+            is_gles2,
         }
     }
 }
@@ -720,6 +724,13 @@ impl GraphicsContext {
 
     pub fn features(&self) -> &Features {
         &self.features
+    }
+
+    /// Whether `glBlitFramebuffer` / `glCopyTexSubImage2D` are usable here.
+    /// GLES2 has neither (they arrived in GLES3 / desktop GL 1.4+), so callers
+    /// that can blit a render pass into a texture must feature-detect first.
+    pub fn supports_framebuffer_blit(&self) -> bool {
+        !self.features.is_gles2
     }
 }
 

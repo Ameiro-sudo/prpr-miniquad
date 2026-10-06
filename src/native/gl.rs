@@ -577,6 +577,22 @@ gl_loader!(
     ) -> (),
     fn glTexParameteri(target: GLenum, pname: GLenum, param: GLint) -> (),
     fn glGetIntegerv(pname: GLenum, params: *mut GLint) -> (),
+    fn glGetFramebufferAttachmentParameteriv(
+        target: GLenum,
+        attachment: GLenum,
+        pname: GLenum,
+        params: *mut GLint
+    ) -> (),
+    fn glCopyTexSubImage2D(
+        target: GLenum,
+        level: GLint,
+        xoffset: GLint,
+        yoffset: GLint,
+        x: GLint,
+        y: GLint,
+        width: GLsizei,
+        height: GLsizei
+    ) -> (),
     fn glEnable(cap: GLenum) -> (),
     fn glBlitFramebuffer(
         srcX0: GLint,
